@@ -3,3 +3,5 @@ numpy
 seaborn
 matplotlib
 scikit-learn
+statsmodels
+wordcloud

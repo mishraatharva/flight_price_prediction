@@ -257,7 +257,7 @@ preprocessor = Pipeline(steps=[
 ])
 
 # read the training data
-path = r"C:/Users/Naruto/Desktop/generative_ai/PROJECTS/flight_price_prediction/data/train.csv"
+path = r"C:\Users\Naruto\Desktop\generative_ai\PROJECTS\flight_price_prediction\data\train.csv"
 train = pd.read_csv(path)
 X_train = train.drop(columns="price")
 y_train = train.price.copy()

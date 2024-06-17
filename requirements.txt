@@ -9,3 +9,5 @@ feature-engine
 xgboost
 streamlit
 joblib
+sagemaker
+boto3

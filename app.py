@@ -40,6 +40,13 @@ from feature_engine.encoding import (
 	CountFrequencyEncoder
 )
 
+import boto3
+import sagemaker
+from sagemaker.predictor import Predictor
+from sagemaker.serializers import CSVSerializer
+from sagemaker.deserializers import JSONDeserializer
+
+
 sklearn.set_config(transform_output="pandas")
 
 
@@ -331,16 +338,40 @@ x_new = pd.DataFrame(dict(
 	for col in ["date_of_journey", "dep_time", "arrival_time"]
 })
 
+
+def predict_from_sagemaker(endpoint_name, input_data):
+    # Initialize the predictor
+    predictor = Predictor(endpoint_name=endpoint_name, 
+                          serializer=CSVSerializer(), 
+                          deserializer=JSONDeserializer())
+
+    # Make prediction
+    prediction = predictor.predict(input_data)
+    return prediction
+
+def predict_from_sagemaker(endpoint_name, input_data):
+    # Initialize the predictor
+    predictor = Predictor(endpoint_name=endpoint_name, 
+                          serializer=CSVSerializer(), 
+                          deserializer=JSONDeserializer())
+
+    # Make prediction
+    prediction = predictor.predict(input_data)
+    return prediction
+
 if st.button("Predict"):
-	saved_preprocessor = joblib.load("preprocessor.joblib")
+    saved_preprocessor = joblib.load("preprocessor.joblib")
 	x_new_pre = saved_preprocessor.transform(x_new)
+	endpoint_name = "LR-v1-2024-06-17-10-19-53-273"
+    prediction = predict_from_sagemaker(endpoint_name, x_new_pre)
 
-	with open("xgboost-model", "rb") as f:
-		model = pickle.load(f)
-	x_new_xgb = xgb.DMatrix(x_new_pre)
-	pred = model.predict(x_new_xgb)[0]
+	# with open("xgboost-model", "rb") as f:
+	# 	model = pickle.load(f)
+	# x_new_xgb = xgb.DMatrix(x_new_pre)
+	# pred = model.predict(x_new_xgb)[0]
 
-	st.info(f"The predicted price is {pred:,.0f} INR")
+	# st.info(f"The predicted price is {pred:,.0f} INR")
+    st.info(f"The predicted price is {prediction:,.0f} INR")
      
 ## NOTE:
 

@@ -361,8 +361,8 @@ def predict_from_sagemaker(endpoint_name, input_data):
 
 if st.button("Predict"):
     saved_preprocessor = joblib.load("preprocessor.joblib")
-	x_new_pre = saved_preprocessor.transform(x_new)
-	endpoint_name = "LR-v1-2024-06-17-10-19-53-273"
+    x_new_pre = saved_preprocessor.transform(x_new)
+    endpoint_name = "LR-v1-2024-06-17-10-19-53-273"
     prediction = predict_from_sagemaker(endpoint_name, x_new_pre)
 
 	# with open("xgboost-model", "rb") as f:

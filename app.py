@@ -351,7 +351,7 @@ class CustomJSONDeserializer(JSONDeserializer):
             print(f"Raw stream data for debugging: {stream_data}")
             raise
 
-
+@st.cache
 def predict_from_sagemaker(endpoint_name, input_data):
     # Initialize the predictor
     predictor = Predictor(endpoint_name=endpoint_name, 

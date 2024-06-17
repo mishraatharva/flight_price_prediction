@@ -5,6 +5,8 @@ import pickle
 import warnings
 
 import joblib
+import json
+import codecs
 
 import numpy as np
 
@@ -339,15 +341,15 @@ x_new = pd.DataFrame(dict(
 })
 
 
-def predict_from_sagemaker(endpoint_name, input_data):
-    # Initialize the predictor
-    predictor = Predictor(endpoint_name=endpoint_name, 
-                          serializer=CSVSerializer(), 
-                          deserializer=JSONDeserializer())
+def deserialize(self, stream, content_type):
+        try:
+            return json.load(codecs.getreader("utf-8")(stream))
+        except json.JSONDecodeError:
+            # Read the stream directly for debugging
+            stream_data = stream.read().decode('utf-8')
+            print(f"Raw stream data for debugging: {stream_data}")
+            raise
 
-    # Make prediction
-    prediction = predictor.predict(input_data)
-    return prediction
 
 def predict_from_sagemaker(endpoint_name, input_data):
     # Initialize the predictor

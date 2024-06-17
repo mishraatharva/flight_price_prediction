@@ -341,7 +341,8 @@ x_new = pd.DataFrame(dict(
 })
 
 
-def deserialize(self, stream, content_type):
+class CustomJSONDeserializer(JSONDeserializer):
+    def deserialize(self, stream, content_type):
         try:
             return json.load(codecs.getreader("utf-8")(stream))
         except json.JSONDecodeError:

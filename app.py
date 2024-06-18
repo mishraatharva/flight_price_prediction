@@ -341,16 +341,15 @@ x_new = pd.DataFrame(dict(
 	col: "str"
 	for col in ["date_of_journey", "dep_time", "arrival_time"]
 })
-
-
-if st.button("Predict"):
-	with open("xgboost-model", "rb") as f:
-	    model = pickle.load(f)
-	    x_new_xgb = xgb.DMatrix(x_new_pre)
-	    pred = model.predict(x_new_xgb)[0]
-
-	# st.info(f"The predicted price is {pred:,.0f} INR")
-        st.info(f"The predicted price is {pred:,.0f} INR")
      
-## NOTE:
+if st.button("Predict"):
+	saved_preprocessor = joblib.load("preprocessor.joblib")
+	x_new_pre = saved_preprocessor.transform(x_new)
+
+	with open("xgboost-model", "rb") as f:
+		model = pickle.load(f)
+	x_new_xgb = xgb.DMatrix(x_new_pre)
+	pred = model.predict(x_new_xgb)[0]
+
+	st.info(f"The predicted price is {pred:,.0f} INR")
 

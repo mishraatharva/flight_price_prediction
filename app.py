@@ -44,9 +44,11 @@ from feature_engine.encoding import (
 
 import boto3
 import sagemaker
+from sagemaker import Session
 from sagemaker.predictor import Predictor
 from sagemaker.serializers import CSVSerializer
 from sagemaker.deserializers import JSONDeserializer
+
 
 
 sklearn.set_config(transform_output="pandas")
@@ -277,6 +279,17 @@ preprocessor.fit(X_train, y_train)
 joblib.dump(preprocessor, "preprocessor.joblib")
 
 ## ----------------------------------------------------------------------------------------------------------------------------------------- ##
+
+# Set the region
+region = 'us-west-2'  # Replace with your desired region
+
+# Initialize the boto3 client
+boto_session = boto3.Session(region_name=region)
+sagemaker_client = boto_session.client('sagemaker-runtime')
+
+# Initialize the SageMaker session
+sagemaker_session = Session(boto_session)
+
 
 # web application
 st.set_page_config(

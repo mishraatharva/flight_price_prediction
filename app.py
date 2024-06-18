@@ -344,14 +344,13 @@ x_new = pd.DataFrame(dict(
 
 
 if st.button("Predict"):
-
 	with open("xgboost-model", "rb") as f:
 	    model = pickle.load(f)
 	    x_new_xgb = xgb.DMatrix(x_new_pre)
 	    pred = model.predict(x_new_xgb)[0]
 
 	# st.info(f"The predicted price is {pred:,.0f} INR")
-    st.info(f"The predicted price is {pred:,.0f} INR")
+        st.info(f"The predicted price is {pred:,.0f} INR")
      
 ## NOTE:
 

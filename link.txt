@@ -1,0 +1,4 @@
+https://www.kaggle.com/search?q=flight+price+prediction+xgboost
+https://www.kaggle.com/code/anshigupta01/flight-price-prediction
+https://www.kaggle.com/code/julienjta/flight-price-prediction-98-47-r2-score
+https://www.kaggle.com/code/varunsaikanuri/flight-fare-prediction-10-ml-models

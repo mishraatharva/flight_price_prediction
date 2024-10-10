@@ -339,4 +339,3 @@ if st.button("Predict"):
 	pred = model.predict(x_new_xgb)[0]
 
 	st.info(f"The predicted price is {pred:,.0f} INR")
-

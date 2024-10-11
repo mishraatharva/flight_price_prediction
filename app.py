@@ -259,13 +259,13 @@ preprocessor = Pipeline(steps=[
 ])
 
 # read the training data
-train = pd.read_csv("train.csv")
+train = pd.read_csv(r"U:\nlp_project\flight-prices-prediction\data_b\train.csv")
 X_train = train.drop(columns="price")
 y_train = train.price.copy()
 
 # fit and save the preprocessor
 preprocessor.fit(X_train, y_train)
-joblib.dump(preprocessor, "preprocessor.joblib")
+# joblib.dump(preprocessor, "preprocessor.joblib")
 
 # web application
 st.set_page_config(
@@ -274,7 +274,7 @@ st.set_page_config(
 	layout="wide"
 )
 
-st.title("Flights Prices Prediction - AWS SageMaker")
+st.title("Flights Prices Prediction")
 
 # user inputs
 airline = st.selectbox(
@@ -329,13 +329,37 @@ x_new = pd.DataFrame(dict(
 	for col in ["date_of_journey", "dep_time", "arrival_time"]
 })
 
-if st.button("Predict"):
-	saved_preprocessor = joblib.load("preprocessor.joblib")
-	x_new_pre = saved_preprocessor.transform(x_new)
+# Sidebar
+def sidebar_section():
+    st.sidebar.title("Select Prediction Model")
+    option = st.sidebar.selectbox("", ("Gradient-Boost-Regressor", "XGboost-Regressor"))
+    return option
 
-	with open("xgboost-model", "rb") as f:
-		model = pickle.load(f)
-	x_new_xgb = xgb.DMatrix(x_new_pre)
-	pred = model.predict(x_new_xgb)[0]
+# Header
+def header_section(option):
+    if option == "Gradient-Boost-Regressor":
+        st.title("Predict using Gradient-Boost-Regressor")
+
+    elif option == "XGboost-Regressor":
+        st.title("Predict using XGboost-Regressor")
+
+
+
+option = sidebar_section()
+if st.button("Predict"):
+	print("inside predict methood")
+	saved_preprocessor = joblib.load("preprocessor.joblib")
+	x_new_pre = preprocessor.transform(x_new)
+	print(x_new_pre)
+	header_section(option)
+	
+	if option == "Gradient-Boost-Regressor":
+		with open(r"U:\nlp_project\flight-prices-prediction\models\GradientBoostingRegressor\modelGBR.pkl", 'rb') as file:
+			model = pickle.load(file)
+		pred = model.predict(x_new_pre)[0]
+	else:
+		with open(r"U:\nlp_project\flight-prices-prediction\models\XGBRegressor\modelXGR.pkl", 'rb') as file:
+			model = pickle.load(file)
+		pred = model.predict(x_new_pre)[0]
 
 	st.info(f"The predicted price is {pred:,.0f} INR")

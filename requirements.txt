@@ -5,3 +5,8 @@ streamlit
 feature-engine
 xgboost
 joblib
+seaborn
+matplotlib
+wordcloud
+
+pyprojroot
